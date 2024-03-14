@@ -1,56 +1,56 @@
-# 项目概述
+# Project Overview
 
-本项目利用蛋白质3D结构数据和BINA编码数据集，采用群智能特征选择算法，并结合机器学习模型，构建一个用于准确识别蛋白质中赖氨酸乙酰化(Kace)位点的高效预测器。项目主要采用Python作为编程语言，并依赖于诸如NumPy、Pandas、Matplotlib、Scikit-learn、XGBoost等多个强大的库，以处理大规模数据集、执行复杂的数学运算和实现数据可视化。
+This project utilizes protein 3D structure data and the BINA encoding dataset. It employs a swarm intelligence feature selection algorithm and combines it with machine learning models to construct an efficient predictor for accurately identifying lysine acetylation (Kace) sites in proteins. The project primarily utilizes Python as the programming language and relies on powerful libraries such as NumPy, Pandas, Matplotlib, Scikit-learn, XGBoost, among others, to handle large-scale datasets, perform complex mathematical computations, and implement data visualization.
 
-## 项目配置
+## Project Configuration
 
-在开始使用本项目之前，请确保您的系统中已安装以下依赖库：
+Before using this project, please make sure that the following dependencies are installed on your system:
 
-- **NumPy**: 用于处理大型、多维数组和矩阵，以及执行广泛的数学运算。
-- **Pandas**: 提供高效、易用的数据结构和数据分析工具，特别适合处理和分析输入数据。
-- **Matplotlib**: 用于生成各种静态、动态和交互式数据可视化图形的绘图库。
-- **Scikit-learn**: 提供了简单而有效的工具，用于数据挖掘和数据分析，尤其擅长于机器学习模型的训练和评估。
-- **XGBoost**: 一个优化的分布式梯度增强库，用于建立、训练和预测决策树模型，特别是在大规模数据集上表现出色。
+- **NumPy**: Used for handling large, multi-dimensional arrays and matrices, as well as performing extensive mathematical computations.
+- **Pandas**: Provides efficient and user-friendly data structures and data analysis tools, particularly suitable for handling and analyzing input data.
+- **Matplotlib**: A plotting library used to generate various static, dynamic, and interactive data visualization graphics.
+- **Scikit-learn**: Provides simple yet effective tools for data mining and data analysis, particularly excelling in training and evaluating machine learning models.
+- **XGBoost**: An optimized distributed gradient boosting library used for building, training, and predicting decision tree models, particularly excelling with large-scale datasets.
 
-您可以通过执行以下命令来安装这些依赖库：
+You can install these dependencies by executing the following commands:
 
 ```bash
 pip install numpy pandas matplotlib scikit-learn xgboost
 
 ```
 
-建议使用Python 3.x版本，以确保最佳的兼容性和性能。
+It is recommended to use Python 3.x version to ensure the best compatibility and performance.
 
-## 使用指南
+## User Guide
 
-数据可用性：在当前研究期间生成或分析的数据集可在PLMD数据库 (http://plmd.biocuckoo.org/) 中获得；此外，关于蛋白质序列的原始数据集可以在DBZ/Datasets/Protein_sequence路径下找到。
+**Data Availability**: The datasets generated or analyzed during the current study are available in the PLMD database (http://plmd.biocuckoo.org/). Additionally, the original datasets regarding protein sequences can be found in the DBZ/Datasets/Protein_sequence directory.
 
-数据预处理：本项目包含六个脚本文件用于数据预处理，前四个脚本处理PLMD数据库中的原始数据以获得蛋白质的3D数据；第五个脚本处理蛋白质序列的原始数据，以获取BINA编码数据；最后一个脚本用于合并这两个数据集。
+**Data Preprocessing**: This project consists of six script files for data preprocessing. The first four scripts handle the raw data from the PLMD database to obtain protein 3D data. The fifth script processes the raw data of protein sequences to obtain BINA encoding data. The last script is used to merge these two datasets.
 
-主模块：该模块实现了基于六种不同的特征选择算法（如蚁群算法、遗传算法等）对数据集进行特征选择。然后利用经过网格搜索优化后的XGBoost模型进行分类。最终，该模块生成特征选择过程中损失变化的折线图，并将分类性能指标记录到日志文件中。
+**Main Module**: This module implements feature selection on the dataset using six different feature selection algorithms (such as ant colony algorithm, genetic algorithm, etc.). It then performs classification using the XGBoost model optimized through grid search. Finally, this module generates a line plot of loss change during the feature selection process and logs the classification performance metrics to a log file.
 
-## 各模块简介
+## Module Introduction
 
 ### Data_Processing
 
-该模块主要用于原始蛋白质数据(pbd和txt)的预处理，包含以下脚本：
+This module is primarily used for preprocessing raw protein data (PDB and TXT), and includes the following scripts:
 
-- **Draw1.py**: 从原始文件夹中提取包含“model_1”的pdb文件。
-- **Draw2.py**: 查找所有PDB文件中的最大行数，以确定填充长度。
-- **Draw3.py**: 确定每个列的数据范围并执行映射编码。
-- **Draw4.py**: 从PDB文件中提取列数据，并执行填充和连接，生成csv文件。
-- **Draw5.py**: 处理蛋白质序列数据，得到BINA编码，将21维向量映射到441维向量，生成2D数据。
-- **Draw6.py**: 连接两个CSV文件（3D和BINA），获取3D+BINA数据。
+- **draw1.py**: Extract PDB files containing "model_1" from the raw folder.
+- **draw2.py**: Find the maximum number of lines in all PDB files to determine the padding length.
+- **draw3.py**: Determine the data range for each column and perform mapping encoding.
+- **draw4.py**: Extract column data from PDB files, perform padding and concatenation, and generate a CSV file.
+- **draw5.py**: Process protein sequence data to obtain BINA encoding, mapping a 21-dimensional vector to a 441-dimensional vector, and generate 2D data.
+- **draw6.py**: Concatenate two CSV files (3D and BINA) to obtain 3D+BINA data.
 
 ### Datasets/Protein_sequence
 
-该模块用于存储蛋白质序列的原始数据集。
+This module is used to store the raw dataset of protein sequences.
 
 ### Feature Selection and Classification
 
-- **feature_selection**：存储了56种特征选择算法；
-- **losses**：定义了一个名为jFitnessFunction的类，该适应度函数主要用于评估特征选择算法的性能；
-- **Grid_search_Classifier**：用于在不同的分类器上进行网格搜索并训练模型，包括KNN、SVM、LR、RF、GB、ERT、XGB、AB等分类器。
-- **main**:用于特征选择及分类。
+- **feature_selection**：Stored 56 feature selection algorithms.
+- **losses**：Defined a class named jFitnessFunction, which serves as the fitness function primarily used to evaluate the performance of feature selection algorithms.
+- **Grid_search_Classifier**：Used for grid search and model training on different classifiers, including KNN, SVM, LR, RF, GB, ERT, XGB, AB, etc.
+- **main**:Used for feature selection and classification.
 
 
