@@ -48,7 +48,7 @@ This module is used to store the raw dataset of protein sequences.
 
 ### Feature Selection and Classification
 
-- **feature_selection**：Stored 56 feature selection algorithms.
+- **feature_selection**：Stored 54 feature selection algorithms.
 - **losses**：Defined a class named jFitnessFunction, which serves as the fitness function primarily used to evaluate the performance of feature selection algorithms.
 - **Grid_search_Classifier**：Used for grid search and model training on different classifiers, including KNN, SVM, LR, RF, GB, ERT, XGB, AB, etc.
 - **main**:Used for feature selection and classification.
