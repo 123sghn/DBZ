@@ -47,10 +47,10 @@ class jGeneticAlgorithmTour:
         # Generations
         while t <= self.max_Iter:
             # Preparation
-            Xc1 = np.zeros((1, dim))
-            Xc2 = np.zeros((1, dim))
-            fitC1 = np.ones(1)
-            fitC2 = np.ones(1)
+            Xc1 = np.zeros((N, dim))
+            Xc2 = np.zeros((N, dim))
+            fitC1 = np.ones(N)
+            fitC2 = np.ones(N)
             z = 1
             for i in range(N):
                 if np.random.rand() < CR:
@@ -63,9 +63,8 @@ class jGeneticAlgorithmTour:
                     # Single point crossover
                     ind = np.random.randint(1, dim - 1)
                     # Crossover between two parents
-                    print(np.concatenate((P1[:ind], P2[ind + 1:dim])))
-                    Xc1[z] = np.concatenate((P1[:ind], P2[ind + 1:dim]))
-                    Xc2[z] = np.concatenate((P2[:ind], P1[ind + 1:dim]))
+                    Xc1[z] = np.concatenate((P1[:ind+1], P2[ind + 1:dim]))
+                    Xc2[z] = np.concatenate((P2[:ind+1], P1[ind + 1:dim]))
                     # Mutation
                     for d in range(dim):
                         # First child
@@ -75,8 +74,8 @@ class jGeneticAlgorithmTour:
                         if np.random.rand() < MR:
                             Xc2[z, d] = 1 - Xc2[z, d]
                     # Fitness
-                    fitC1[0, z] = self.loss_func(x_train[:,Xc1[i, :] > self.thres], x_test[:,Xc1[i, :] > self.thres], y_train, y_test)
-                    fitC2[0, z] = self.loss_func(x_train[:,Xc2[i, :] > self.thres], x_test[:,Xc2[i, :] > self.thres], y_train, y_test)
+                    fitC1[z] = self.loss_func(x_train[:,Xc1[i, :] > self.thres], x_test[:,Xc1[i, :] > self.thres], y_train, y_test)
+                    fitC2[z] = self.loss_func(x_train[:,Xc2[i, :] > self.thres], x_test[:,Xc2[i, :] > self.thres], y_train, y_test)
                     z = z + 1
             # Merge population
             XX = np.concatenate((X, Xc1, Xc2), axis=0)
