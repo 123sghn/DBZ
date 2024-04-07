@@ -24,6 +24,7 @@ class jSimulatedAnnealing:
         dim = x_train.shape[1]
         # Initial
         X = self._Initialization(1, dim)
+        X = X.flatten()
         # Fitness
         fit = self.loss_func(x_train[:, X > self.thres], x_test[:, X > self.thres],
                                         y_train, y_test)
@@ -32,7 +33,7 @@ class jSimulatedAnnealing:
         fitG = fit
         # Pre
         curve = np.zeros(self.max_Iter)
-        t = 2
+        t = 1
         # Iterations
         while t <= self.max_Iter:
             # Probabilty of swap, insert, flip & eliminate
