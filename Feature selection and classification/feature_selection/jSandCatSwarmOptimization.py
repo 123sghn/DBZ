@@ -1,8 +1,20 @@
 import numpy as np
 from losses.jFitnessFunction import jFitnessFunction
 
+
 class jSandCatSwarmOptimization:
-    def __init__(self, N, max_Iter, loss_func, alpha=0.9, beta=0.1, thres=0.5, tau=1, rho=0.2, eta=1):
+    def __init__(
+        self,
+        N,
+        max_Iter,
+        loss_func,
+        alpha=0.9,
+        beta=0.1,
+        thres=0.5,
+        tau=1,
+        rho=0.2,
+        eta=1,
+    ):
         self.N = N
         self.max_Iter = max_Iter
         self.loss_func = loss_func
@@ -14,9 +26,9 @@ class jSandCatSwarmOptimization:
         self.eta = eta
 
     def optimize(self, x_train, x_test, y_train, y_test):
-        dim = x_train.shape[1]  # 维度
-        lb = 0  # 下界
-        ub = 1  # 上界
+        dim = x_train.shape[1]
+        lb = 0
+        ub = 1
         P = 0.5  # constant
         FADs = 0.2  # fish aggregating devices effect
         N = self.N
@@ -33,13 +45,19 @@ class jSandCatSwarmOptimization:
                 Flag4ub = X[i, :] > ub
                 Flag4lb = X[i, :] < lb
                 # 更新X
-                X[i, :] = (X[i, :] * (~(Flag4ub + Flag4lb))) + ub * Flag4ub + lb * Flag4lb
+                X[i, :] = (
+                    (X[i, :] * (~(Flag4ub + Flag4lb))) + ub * Flag4ub + lb * Flag4lb
+                )
 
-                fitness = self.loss_func(x_train[:, X[i, :] > self.thres], x_test[:, X[i, :] > self.thres],
-                                        y_train, y_test)
+                fitness = self.loss_func(
+                    x_train[:, X[i, :] > self.thres],
+                    x_test[:, X[i, :] > self.thres],
+                    y_train,
+                    y_test,
+                )
                 if fitness < fitG:
                     fitG = fitness
-                    Xgb = X[i, :]
+                    Xgb = X[i, :].copy()
 
             S = 2  # S is maximum Sensitivity range
             rg = S - ((S) * t / (self.max_Iter))  # guides R
@@ -54,16 +72,18 @@ class jSandCatSwarmOptimization:
                     else:
                         cp = np.floor(N * np.random.rand()).astype(int)
                         CandidatePosition = X[cp, :]
-                        X[i, j] = r * (CandidatePosition[j] - np.random.rand() * X[i, j])
+                        X[i, j] = r * (
+                            CandidatePosition[j] - np.random.rand() * X[i, j]
+                        )
 
             t += 1
             curve[t - 1] = fitG
-            print(f'\nIteration {t} Best (SCSO) = {curve[t-1]}')
+            print(f"\nIteration {t} Best (SCSO) = {curve[t-1]}")
 
         Pos = np.arange(1, dim + 1)
         Sf = Pos[Xgb > self.thres]  # selected features
 
-        SCSO = {'sf': Sf, 'c': curve}
+        SCSO = {"sf": Sf, "c": curve}
 
         return SCSO
 
@@ -75,5 +95,3 @@ class jSandCatSwarmOptimization:
         C = np.cumsum(P)
         j = np.where(r <= C)[0][0]
         return j
-
-
