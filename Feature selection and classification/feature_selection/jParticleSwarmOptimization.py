@@ -3,7 +3,7 @@ import numpy as np
 from losses.jFitnessFunction import jFitnessFunction
 
 class jParticleSwarmOptimization:
-    def __init__(self, N, max_Iter, loss_func, alpha=0.9, beta=0.1, thres=0.5, tau=1, rho=0.2, eta=1):
+    def __init__(self, N, max_Iter, loss_func, alpha=0.9, beta=0.1, thres=0.5, tau=1, rho=0.2):
         self.N = N
         self.max_Iter = max_Iter
         self.loss_func = loss_func
