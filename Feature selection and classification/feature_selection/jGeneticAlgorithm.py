@@ -47,11 +47,11 @@ class jGeneticAlgorithm:
             Ifit = 1 / (1 + fit)
             prob = Ifit / np.sum(Ifit)
             # Preparation
-            Xc1 = np.zeros((1, dim))
-            Xc2 = np.zeros((1, dim))
-            fitC1 = np.ones(1)
-            fitC2 = np.ones(1)
-            z = 1
+            Xc1 = np.zeros((N, dim))
+            Xc2 = np.zeros((N, dim))
+            fitC1 = np.ones(N)
+            fitC2 = np.ones(N)
+            z = 0
             for i in range(N):
                 if np.random.rand() < CR:
                     # Select two parents
@@ -64,8 +64,8 @@ class jGeneticAlgorithm:
                     ind = np.random.randint(1, dim)
                     # Crossover between two parents
 
-                    Xc1[z, :] = np.concatenate((P1[0:ind], P2[ind + 1:dim]))
-                    Xc2[z, :] = np.concatenate((P2[0:ind], P1[ind + 1:dim]))
+                    Xc1[z, :] = np.concatenate((P1[0:ind + 1], P2[ind + 1:dim]))
+                    Xc2[z, :] = np.concatenate((P2[0:ind + 1], P1[ind + 1:dim]))
                     # Mutation
                     for d in range(dim):
                         # First child
@@ -75,9 +75,9 @@ class jGeneticAlgorithm:
                         if np.random.rand() < MR:
                             Xc2[z, d] = 1 - Xc2[z, d]
                     # Fitness
-                    fitC1[0, z] = self.loss_func(x_train[:, Xc1[i, :] > self.thres], x_test[:, Xc1[i, :] > self.thres],
+                    fitC1[z] = self.loss_func(x_train[:, Xc1[i, :] > self.thres], x_test[:, Xc1[i, :] > self.thres],
                                         y_train, y_test)
-                    fitC2[0, z] = self.loss_func(x_train[:, Xc2[i, :] > self.thres], x_test[:, Xc2[i, :] > self.thres],
+                    fitC2[z] = self.loss_func(x_train[:, Xc2[i, :] > self.thres], x_test[:, Xc2[i, :] > self.thres],
                                         y_train, y_test)
                     z = z + 1
 
