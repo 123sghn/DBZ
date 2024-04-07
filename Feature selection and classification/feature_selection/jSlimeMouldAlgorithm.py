@@ -20,7 +20,7 @@ class jSlimeMouldAlgorithm:
         lb = 0
         ub = 1
         z = 0.03  # control local & global
-        N= self.N
+        N = self.N
         dim = x_train.shape[1]
 
         # Initial
@@ -47,7 +47,7 @@ class jSlimeMouldAlgorithm:
                 # Best
                 if fit[i] < fitG:
                     fitG = fit[i]
-                    Xb = X[i, :]
+                    Xb = X[i, :].copy()
 
             # Sort smell index (2.6)
             idxS = np.argsort(fit)
