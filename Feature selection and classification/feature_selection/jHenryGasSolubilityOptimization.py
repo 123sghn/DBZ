@@ -23,9 +23,9 @@ class jHenryGasSolubilityOptimization:
         ub = 1
         num_gas = 2  # number of gas types / cluster
         K = 1  # constant
-        L1 = 5E-3
+        L1 = 0.005
         L2 = 100
-        L3 = 1E-2
+        L3 = 0.01
         Ttheta = 298.15
         eps = 0.05
         c1 = 0.1
